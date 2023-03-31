@@ -1,12 +1,12 @@
 <template>
-  <div class="table-column">
+  <li class="table-column">
     <label class="table-column__label">
       <span class="table-column__name">
-        {{label}}
+        {{ label }}
       </span>
       {{ computedContent }}
     </label>
-  </div>
+  </li>
 </template>
 
 <script>
@@ -41,6 +41,7 @@ export default {
 </script>
 <style lang="scss">
 .table-column {
+  list-style: none;
   &__label {
     display: flex;
     flex-flow: column;

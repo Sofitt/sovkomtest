@@ -14,7 +14,7 @@
         </div>
       </div>
       <template v-if="filteredData.length">
-        <div class="data-table__row" v-for="row of dataPerPage" :key="row.id">
+        <ul class="data-table__row" v-for="row of dataPerPage" :key="row.id">
           <!-- отделяю представление от данных, чтобы не был важен порядок и наличие ключей в объекте row -->
           <table-column class="data-table__column"
                         v-for="column of columns"
@@ -23,7 +23,7 @@
                         :label="column.label"
                         :content="row"
                         :style="getColumnOptions(column.prop)"/>
-        </div>
+        </ul>
       </template>
       <template v-else>
         <div class="data-table__placeholder">

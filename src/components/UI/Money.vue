@@ -48,18 +48,16 @@ export default {
       }
     },
     emitFormatted(from, formatted) {
-      if (!this.emitFormatted.emitSeparateFlag) {
-        this.emitFormatted.emitSeparateFlag = 1;
+      if (!this.emitFormatted.emitsDivider) {
+        this.emitFormatted.emitsDivider = 1;
       }
       if (from !== 'watch') {
-        const emitPayload = ['input'];
         if (formatted.isValid) {
-          emitPayload.push(formatted.digit);
-          this.$emit(...emitPayload);
+          this.$emit('input', formatted.digit);
         } else {
           // eslint-disable-next-line no-plusplus
-          this.emitFormatted.emitSeparateFlag++;
-          if (this.emitFormatted.emitSeparateFlag === 2) {
+          this.emitFormatted.emitsDivider++;
+          if (this.emitFormatted.emitsDivider % 2 === 0) {
             this.$emit('input');
           }
         }
