@@ -57,7 +57,7 @@ export default {
         } else {
           // eslint-disable-next-line no-plusplus
           this.emitFormatted.emitsDivider++;
-          if (this.emitFormatted.emitsDivider % 2 === 0) {
+          if (this.emitFormatted.emitsDivider % 2 === 0 || !this.$el.value) {
             this.$emit('input');
           }
         }
