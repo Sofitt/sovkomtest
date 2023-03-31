@@ -32,7 +32,7 @@ export default {
     computedContent() {
       let content = this.content[this.propName];
       if (this.propName === 'date') {
-        content = formatDate(this.content[this.propName]);
+        content = formatDate(content);
       }
       return content;
     },
