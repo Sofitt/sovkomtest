@@ -1,7 +1,7 @@
 <template>
   <div class="data-table">
     <div class="data-table__filter">
-      <ui-money @input="updateFilter" :default-value="moneyFilter.toString()"/>
+      <ui-money v-model="moneyFilter"/>
     </div>
 
     <div class="data-table__content" v-if="rows && rows.length">
@@ -61,7 +61,7 @@ export default {
   data: () => ({
     page: 1,
     pageSize: 4,
-    moneyFilter: '0',
+    moneyFilter: 0,
   }),
 
   computed: {
@@ -80,9 +80,6 @@ export default {
   },
 
   methods: {
-    updateFilter(value) {
-      this.moneyFilter = value;
-    },
     getColumnOptions(columnKey) {
       const options = this.columns.find((column) => column.prop === columnKey);
       return options && { 'flex-basis': options.width };

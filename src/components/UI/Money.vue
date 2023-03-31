@@ -1,8 +1,7 @@
 <template>
   <input
-    ref="input"
     type="text"
-    @input.prevent="updateField"
+    v-model="valueInput"
     @keydown="handleKeyDown"
     class="ui-money"
     placeholder="Filter by money..."
@@ -15,18 +14,32 @@ import formatNumber from '@/utils/formatNumber';
 export default {
   name: 'UiMoney',
   props: {
-    defaultValue: {
-      type: String,
-      default: '0',
+    value: {
+      type: Number,
+      require: true,
     },
   },
   data() {
     return {
-      valueInput: '',
+      input: '',
     };
   },
-  created() {
-    this.valueInput = this.defaultValue;
+  watch: {
+    value: {
+      handler(v) {
+        this.updateField(v?.toString(), 'watch');
+      },
+    },
+  },
+  computed: {
+    valueInput: {
+      get() {
+        return this.input;
+      },
+      set(v) {
+        this.updateField(v);
+      },
+    },
   },
   methods: {
     handleKeyDown(evt) {
@@ -34,16 +47,34 @@ export default {
         evt.preventDefault();
       }
     },
-    updateField(evt) {
-      const formatted = formatNumber(evt.target.value);
-      evt.target.value = formatted.formatted;
-      let emitPayload = '';
-      if (formatted.isValid) {
-        this.valueInput = formatted.digit;
-        emitPayload = this.valueInput;
+    emitFormatted(from, formatted) {
+      if (!this.emitFormatted.emitSeparateFlag) {
+        this.emitFormatted.emitSeparateFlag = 1;
       }
-      this.$emit('input', emitPayload);
+      if (from !== 'watch') {
+        const emitPayload = ['input'];
+        if (formatted.isValid) {
+          emitPayload.push(formatted.digit);
+          this.$emit(...emitPayload);
+        } else {
+          // eslint-disable-next-line no-plusplus
+          this.emitFormatted.emitSeparateFlag++;
+          if (this.emitFormatted.emitSeparateFlag === 2) {
+            this.$emit('input');
+          }
+        }
+        // Обновить инпут
+        this.$forceUpdate();
+      }
     },
+    updateField(value, from) {
+      const formatted = formatNumber(value);
+      this.input = formatted.formatted;
+      this.emitFormatted(from, formatted);
+    },
+  },
+  created() {
+    this.valueInput = this.value?.toString();
   },
 };
 </script>

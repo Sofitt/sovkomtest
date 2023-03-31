@@ -26,11 +26,12 @@ const getFormatted = (value) => {
  * @returns {{isValid: boolean, digit: number, formatted: string}}
  */
 const formatNumber = (value) => {
+  if (!value) return { isValid: false, digit: undefined, formatted: '' };
   value = reformat(value);
   value = value.replace(/[^0-9.,]/g, '').replace(/,/, '.');
   const result = value.match(/([0-9]+)(\.?)([0-9]{0,2})/) || [];
   const digit = getDigit(result[0]);
-  return { isValid: !!digit, digit, formatted: getFormatted(result[0]) };
+  return { isValid: digit !== '', digit, formatted: getFormatted(result[0]) };
 };
 
 export default formatNumber;

@@ -23,7 +23,6 @@ describe('Money component', () => {
     control.setValue(input);
 
     await wrapper.vm.$nextTick();
-
     expect(control.element.value).toBe(value);
     expect(wrapper.emitted('input')[1]).toEqual(emitted === undefined ? undefined : [emitted]);
   });
