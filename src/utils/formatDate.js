@@ -1,24 +1,28 @@
 import { DateTime } from 'luxon';
 
-const validateDateFormat = (dateStr) => {
-  const date = new Date(dateStr);
+const validateDateFormat = (date) => {
   return date instanceof Date && !Number.isNaN(date);
 };
-const validateDay = (day, month, year) => {
-  return day <= new Date(year, month, 0).getDate();
+const validateDay = (dateStr, day, month, year) => {
+  const dateFormatEqual = dateStr === `${year}-${month}-${day}`;
+  return dateFormatEqual && day <= new Date(year, month, 0).getDate();
 };
-const formatDateDefault = (date) => {
-  date = new Date(date);
+/**
+ * yyyy-MM-dd => dd.MM.yyyy
+ * @param dateStr:string
+ * @returns {string}
+ */
+const formatDateDefault = (dateStr) => {
+  const date = new Date(dateStr);
   if (!validateDateFormat(date)) {
     return 'Wrong date format';
   }
   const d = date.getDate();
   const m = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
   const y = date.getFullYear();
-  if (!validateDay(d, m, y)) {
-    return 'Wrong day count';
-  }
-  return `${d}.${m}.${y}`;
+  return validateDay(dateStr, d, m, y)
+    ? `${d}.${m}.${y}`
+    : 'Wrong day count';
 };
 
 /* luxon был предустановлен. Если его нельзя было использовать, то есть код выше. */
